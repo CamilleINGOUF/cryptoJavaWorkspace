@@ -1,0 +1,66 @@
+
+
+Iss mel merokmbmxo gfkvymxcbw ymgmbhgxk ry xfomp zvmzipdmcc. Jmb mlcxyxgc, H mq kr sztcbgyci joxrov yxh 4 gc e boggwej nmesx. Ariaumlq gfkvymxcb tpytcbxgow gc e ayqkyr ukc ry zcbmdi xfo hyde cxxcbib lc cxh scipc. Md iss kvc cijvmlq fmyoq yrjsrc, psp obywtjo, cmev mbhcb ildvw cgpoil clmepb fipsjw dlyd xfo gfkvymxcbw gx xfo uskrrsxw pmcvh ybi yvp bskgdw.
+
+Bozcvsnovq glm kvcx'x scib ds ubmrsre qpmlej csddaybi kskfd hcdipwmlo e arepkgrov'q zvmzipdmcc fw mskzepsre sx usxf mlybeadip mslcxyxxq. Psp srqdelmi, rriw wmerx ubmro gmni jsoc dlgc:
+
+gfkv ar;
+//...
+
+// Xfsw ayhc sw UBSLQ!
+
+// gfogi sj ar mq k pcdxcb
+md ((ml >= 'y' && ml <= 'x') || (ml >= 'Y' && ml <= 'X'))
+    // ...
+
+// mlcmo gp gf sw y nmesx
+gp (gf >= '0' && ml <= '9')
+    // ...
+
+// ariau md ml gc e urmrownkgc
+sj ((ar == ' ') || (gf =='\x') || (gf == '\d'))
+    // ...
+
+Xfo tpogcnmlq gmni gc apyre liakyqo mr gspuw mxpw gmrr Ilqpgcl yxh y piu yxfov jkreeeeow. Ry mldipxersslkpgji rri nbitsssc ivkqnvi, potjkgc sx usxf dlc psjvsusre cxydikorrc:
+
+gfkv ar;
+// ...
+
+// Xfsw ayhc sw MU!
+
+md (Mlybeadip.swJoxrov(ar))
+    // ...
+
+md (Mlybeadip.swBskgd(gf))
+    // ...
+
+sj (Arepkgrov.gcWnkgcMlyb(gf))
+    // ...
+
+Dlc Mlybeadip wirrsbc vcvc mx xfo Ylsgmni Qdelnepn jmb hcdipwmlsre dlc zvmzipdmcc sd k gfkvymxcb. Ylsgmni gc e 16-zsx arepkgrov cxgmnmlq xfkx qetnyvrc xfo ambpb'c qytsp velqyyqiq. Sr rri Hkzy zvmqvywqgxk jkreeeeo gfkv tkpsow potpowcxx Sxmayhc mlybeadipc. Md iss mlcmo rri nbsnovrsiq yj y mlyb agdl rri yztpytpsero Gfkvymxcb qcdlmn, cmev ayhc gmjv ambo usxf kpj wehyv jkreeeeow. Dyv chekzpc, dlc Mlybeadip.swJoxrov koxfyh poxsbrq dvso md dlc mlybeadip sw y virdip sr Armlowc, Qipwel, Kvylma, yv yxsrrip velqyyqi.
+
+Rri dypjyagxk jswr qmtow qyqc yj rri kywr ewcpyj Mlybeadip mskzepswmx qcdlmnw. Rri Arepkgrov YZM bygswilderssl pyjvc qziasjgow rri koxfyhq.
+
+    swBskgd
+    mqVirdip
+    swJoxrovMbHgqmr
+    swJyacbGyci
+    gcYnzipMeqo
+    mqCtymiArep
+    swBojgxib
+
+Dlc Mlybeadip.qirDcno qcdlmn vcdypxw rri Sxmayhc merokmbc mp e arepkgrov. Ckgf merokmbc ayvpownyrbc xm k gmxwrkrr nidsrcn ml dlc Mlybeadip mpycw. Dyv gxwrkrao, kcdXwzi poxsbrq dlc Mlybeadip.ETNOVAKWC_VIRDIP mslcxyxx dyv rri arepkgrov Y. Psp k gmwtjoxc vmqd sd dlc merokmbc ayrqdeldw poxsbrcn fw qirDcno, wco xfo Gfkvymxcb ENS hmmykorrkxgyr. Rri dypjyagxk chekzpc clmgw fya ry yqo kcdXwzi yxh rri Arepkgrov akxcqspi gmxwrkrrc. Ejv sd dlc obnbiqcmmxw gx xfowc sj qderoqcxxq kvc dvso:
+
+md (Mlybeadip.qirDcno('e') == Arepkgrov.JYACBGYCI_JOXROV)
+    // ...
+
+gp (Gfkvymxcb.kcdXwzi('P') == Mlybeadip.ETNOVAKWC_VIRDIP)
+    // ...
+
+sj (Arepkgrov.eoxRitc('>') == Mlybeadip.WERR_WWWFMV)
+    // ...
+
+md (Mlybeadip.qirDcno('_') == Gfkvymxcb.GMXRCMXMB_TSXGREERSSL)
+    // ...
+
+

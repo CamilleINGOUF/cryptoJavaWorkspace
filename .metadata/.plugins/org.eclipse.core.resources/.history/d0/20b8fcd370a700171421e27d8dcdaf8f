@@ -1,0 +1,22 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Map;
+import java.util.Scanner;
+
+public class FindKey {
+	public static Map<String,Double> letterFreq;
+	
+	public static void letterFreqOfText(String text)
+	{
+		letterFreq = new Map<String, Double>();
+		for(int i = 0; i < 26; i++)
+			letterFreq.put(""+(char)(i+97), (double) 0);
+	}
+
+	public static void main(String[] args) throws FileNotFoundException 
+	{
+		String content = new Scanner(new File(args[3])).useDelimiter("\\Z").next();
+		letterFreqOfText(content);
+	}
+
+}

@@ -1,0 +1,62 @@
+import java.awt.MultipleGradientPaint.CycleMethod;
+
+public class Vigenere 
+{
+	public static String vigenere(String key, String word)
+	{		
+		/*System.out.println("==================");
+		
+		int temp = (('z'%97 + 'z'%97)%26)+97;
+		
+		System.out.println(temp);
+		System.out.println((char)temp);
+		
+		System.out.println("==================");*/
+		
+		String toReturn = new String();
+		
+		for(int i = 0; i < word.length(); i++)
+		{
+			//ça crypte 
+			int letterWord = word.charAt(i);
+			boolean isUpperCase = Character.isUpperCase(letterWord);
+			int letterKey = key.charAt(i%key.length());
+			
+			Character.toLowerCase(letterWord);
+			
+			char tempChar = (char)((((letterWord + letterKey)%97)%26)+97);
+			
+			if(Character.isUpperCase(letterWord))  
+				Character.toUpperCase(tempChar);
+			
+			toReturn += tempChar;
+		}
+		return toReturn;
+	}
+	
+	public static String decrypt(String key, String word)
+	{
+		String toReturn = new String();
+		for(int i = 0; i < word.length(); i++)
+		{
+			//ça décrypte 
+			int letterWord = word.charAt(i);
+			int letterKey = key.charAt(i%key.length());
+			
+			toReturn += (char)(((Math.floorMod((letterWord - letterKey), 26))%97)+97);
+		}
+		return toReturn;
+	}
+	
+	public static void main(String[] args) 
+	{
+		String word  = "Word";
+		String cryptedWord = vigenere("key",word);
+		System.out.println(word+" -> "+ cryptedWord);
+		
+		System.out.println("=========================");
+		
+		String decryptedWord = decrypt("key", cryptedWord);
+		System.out.println(cryptedWord+" -> "+decryptedWord);
+	}
+}
