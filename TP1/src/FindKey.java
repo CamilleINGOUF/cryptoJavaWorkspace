@@ -1,79 +1,132 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class FindKey {
-	public static Map<String,Double> letterFreq;
-	public static Map<String,Double> letterNumber;
+	public static HashMap<HashMap<String,Integer>, Double> letterFreq;
+	public static HashMap<HashMap<String,Integer>, Double> letterNumber;
+	public static HashMap<Integer, Double> totalLetterForN;
+	public static HashMap<Integer, Double> icForN;
 	
-	public static void letterFreqOfText(String text)
+	public static void letterFreqOfTextForN(String text, int n)
 	{
-		letterFreq = new HashMap<String, Double>();
-		letterNumber = new HashMap<String, Double>();
-		for(int i = 0; i < 26; i++)
-		{
-			letterFreq.put(""+(char)(i+97), (double) 0);
-			letterNumber.put(""+(char)(i+97), (double) 0);
-		}
+		letterFreq = new HashMap<HashMap<String, Integer>, Double>();
+		letterNumber = new HashMap<HashMap<String, Integer>, Double>();
 		
-		int numberOfLetters = 0;
-		
-		for(char c : text.toCharArray())
+		totalLetterForN = new HashMap<Integer,Double>();
+		for(int i = 1; i <= n; i++)
 		{
-			c = Character.toLowerCase(c);
-			if(c >= 'a' && c <= 'z')
+			totalLetterForN.put(i, 0.0);
+			for(int j = 0; j < 26; j++)
 			{
-				numberOfLetters++;
-				//System.out.println(c);
-				letterNumber.put(""+c,(double)(letterNumber.get(""+c)+1));
+				HashMap keyStringInteger = new HashMap<String, Integer>();
+				keyStringInteger.put(""+(char)(j+97), i);
+				
+				letterFreq.put(keyStringInteger, 0.0);
+				letterNumber.put(keyStringInteger, 0.0);
 			}
 		}
-		for(int i = 97; i <= 'z';i++)
+		
+		char[] charsText = text.toCharArray();
+		
+		for(int k = 1; k <= n; k++)
 		{
-			letterFreq.put(""+(char)i,((letterNumber.get(""+(char)i)*100)/numberOfLetters));
+			for(int i = 0; i < charsText.length; i += k)
+			{
+				charsText[i] = Character.toLowerCase(charsText[i]);
+				
+				//tant que c'est pas une lettre minuscule
+				while(!(charsText[i] >= 'a' && charsText[i] <= 'z'))
+				{
+					i++;
+					
+					if(i >= charsText.length)
+						break;
+					
+					charsText[i] = Character.toLowerCase(charsText[i]);
+				}
+				
+				if(i >= charsText.length)
+					break;
+				
+				totalLetterForN.put(k, totalLetterForN.get(k) + 1);
+				HashMap keyStringInteger = new HashMap<String, Integer>();
+				keyStringInteger.put(""+charsText[i], k);
+				letterNumber.put(keyStringInteger, letterNumber.get(keyStringInteger) + 1);
+			}
 		}
-		System.out.println(numberOfLetters+" letters !");
+		
+		for(int k = 1; k <= n; k++)
+		{
+			for(int i = 97; i <= 'z';i++)
+			{
+				HashMap keyStringInteger = new HashMap<String, Integer>();
+				keyStringInteger.put(""+(char)i, k);
+				letterFreq.put(keyStringInteger, letterNumber.get(keyStringInteger)/totalLetterForN.get(k));
+			}
+		}
+		
+		calculateIC(n);
 	}
 	
-	//Calculer l'indice de coincidence pour chaque taille de cl√© jusque 20
-	public static void Kasiski(String text)
+	public static void calculateIC(int n)
 	{
-		
-		for(int sizeToTest = 2; sizeToTest < 20; sizeToTest++)
+		icForN = new HashMap<Integer, Double>();
+		for(int k = 1; k <= n; k++)
 		{
-			for(int j=0; j < text.length();j += sizeToTest)
-			{
-				
-			}
+			icForN.put(k, getIC(k));
 		}
+	}
+	
+	public static double getIC(int k)
+	{
+		double toReturn = 0.0;
+		for(int i = 97; i <= 'z'; i++)
+		{
+			HashMap keyStringInteger = new HashMap<String, Integer>();
+			keyStringInteger.put(""+(char)i, k);
+			double top = letterNumber.get(keyStringInteger) * (letterNumber.get(keyStringInteger) - 1.0);
+			double bottom = totalLetterForN.get(k) * totalLetterForN.get(k) - 1.0;
+			toReturn += top/bottom;
+		}
+		return toReturn;
+	}
+
+	//Donne l'indice de coincidence max du tableau des indices de coincidence
+	public static void maxIC(int k) 
+	{
+		double maxIC = 0.0;
+		int indexIC = 0;
+		for(int i = 1; i < k; i++)
+		{
+			if(maxIC < icForN.get(i))
+			{
+				maxIC = icForN.get(i);
+				indexIC = i;
+			}	
+		}
+			
+		System.out.println(icForN);
 		
+		System.out.println(indexIC);
+		System.out.println(maxIC);
+	}
+	
+	
+	//Retrouve la taille de la clÈ
+	public static void sizeOfKey(String content)
+	{
+		int n = 10;
+		letterFreqOfTextForN(content,n);
+		maxIC(n);
 	}
 
 	public static void main(String[] args) throws FileNotFoundException 
 	{
-		String content = new Scanner(new File(args[0])).useDelimiter("\\Z").next();
-		letterFreqOfText(content);
-		Kasiski(content);
 		
-		double totalLetters = 0;
-		double totalPercent = 0;
-		
-		for (Map.Entry<String, Double> entry : letterNumber.entrySet())
-		{
-		    System.out.println(entry.getKey() + "/" + entry.getValue());
-		    totalLetters += entry.getValue();
-		}
-		
-		for (Map.Entry<String, Double> entry : letterFreq.entrySet())
-		{
-		    System.out.println(entry.getKey() + "/" + entry.getValue());
-		    totalPercent += entry.getValue();
-		}
-		
-		//System.out.println("Total letters : "+totalLetters);
-		//System.out.println("Total percent : "+totalPercent);
+		String content = new Scanner(new File("texteChiffre.txt")).useDelimiter("\\Z").next();
+		sizeOfKey(content);
 	}
 
 }

@@ -1,66 +1,25 @@
+After you’ve set up your image next to your blank canvas, you’re done for the day! Don’t forget to mark the task done in your log—and celebrate!!! See you tomorrow. 
+Task 6.2: Laying down the grid
+Almost all drawing tools will have an option to show a grid. This will aid you to hit individual pixels. Figure out how to do so. Things to explore:
+spacing,
+major vs minor guidelines, and
+grid color and style.
 
-
-You can categorize characters according to their properties. For instance, X is an uppercase letter and 4 is a decimal digit. Checking character properties is a common way to verify the data entered by end users. If you are selling books online, for example, your order entry screen should verify that the characters in the quantity field are all digits.
-
-Developers who aren't used to writing global software might determine a character's properties by comparing it with character constants. For instance, they might write code like this:
-
-char ch;
-//...
-
-// This code is WRONG!
-
-// check if ch is a letter
-if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'))
-    // ...
-
-// check if ch is a digit
-if (ch >= '0' && ch <= '9')
-    // ...
-
-// check if ch is a whitespace
-if ((ch == ' ') || (ch =='\n') || (ch == '\t'))
-    // ...
-
-The preceding code is wrong because it works only with English and a few other languages. To internationalize the previous example, replace it with the following statements:
-
-char ch;
-// ...
-
-// This code is OK!
-
-if (Character.isLetter(ch))
-    // ...
-
-if (Character.isDigit(ch))
-    // ...
-
-if (Character.isSpaceChar(ch))
-    // ...
-
-The Character methods rely on the Unicode Standard for determining the properties of a character. Unicode is a 16-bit character encoding that supports the world's major languages. In the Java programming language char values represent Unicode characters. If you check the properties of a char with the appropriate Character method, your code will work with all major languages. For example, the Character.isLetter method returns true if the character is a letter in Chinese, German, Arabic, or another language.
-
-The following list gives some of the most useful Character comparison methods. The Character API documentation fully specifies the methods.
-
-    isDigit
-    isLetter
-    isLetterOrDigit
-    isLowerCase
-    isUpperCase
-    isSpaceChar
-    isDefined
-
-The Character.getType method returns the Unicode category of a character. Each category corresponds to a constant defined in the Character class. For instance, getType returns the Character.UPPERCASE_LETTER constant for the character A. For a complete list of the category constants returned by getType, see the Character API documentation. The following example shows how to use getType and the Character category constants. All of the expressions in these if statements are true:
-
-if (Character.getType('a') == Character.LOWERCASE_LETTER)
-    // ...
-
-if (Character.getType('R') == Character.UPPERCASE_LETTER)
-    // ...
-
-if (Character.getType('>') == Character.MATH_SYMBOL)
-    // ...
-
-if (Character.getType('_') == Character.CONNECTOR_PUNCTUATION)
-    // ...
-
-
+Did you figure it out? That’s all for today, continue below tomorrow. And of course, mark your task done and celebrate!
+Task 6.3: Copy an existing image
+Ready? This is it! It’s time to draw an actual image.
+Pick one of the sprites from your reference. Black and white is easiest, but if you’ve played with colors already, feel free to choose those too. You’ll be counting pixels, which is not at all like drawing something on your own, but I want you to practice using the tools and making something that is a finished image. 
+Happy pixeling! When you’re done, mark the task done and do your cheer.
+Tomorrow you can:
+continue to activity 7: Time machine.
+find your own favorite sprites in the extra task below.
+Task 6.4: Digging for gold
+Your goal today is to find a sprite reference on your own (instead of me providing it like I’ve done above). This is great because you get to explore your own favorites—always a happy activity full of nostalgia.
+However, this task has a prerequisite. Because I talk about references on the Process level of the knowledge database, you should have completed your cursory reading in activity 4: The road ahead up to the Task 4.4 (References and design).
+After you’ve completed Task 4.4, your goal is to use any of the sprite resources you’ve read about in section 2.2.3 (Game asset resources) to find some of your own favorite sprites.
+Tomorrow, continue below.
+Task 6.5: How did they do it
+Just like Task 6.3, copy an existing sprite, this time from one of your favorites. More often than not, you will have some bigger sprites on your hands. Copying existing pixel art is not really that useful—it’s just to get you up to speed with the tools and get some (subconscious) feeling of how real sprites have their pixels positioned. 
+To complete today’s task, just draw a small portion if you’ve chosen a bigger sprite. Do a part you find most interesting.
+From here on, continue to activity 7: Time machine.
+In this step you’ve seen that you have all the tools and technique to arrive at the same result as the masters. But, as you can imagine, the path to come up with a sprite in the first place is quite different. We’ll explore that next. Don’t forget you can also always do some reading in activity 4 if you don’t feel like opening your drawing software on that day.
