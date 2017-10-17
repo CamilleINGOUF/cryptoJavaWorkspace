@@ -2,11 +2,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
+
+//INGOUF Camille Master 1 ISIDIS
 
 public class Vigenere 
 {
-	public static String vigenere(String key, String word)
+	//Crypter un texte
+	public static String crypt(String key, String word)
 	{
 		String toReturn = new String();
 		
@@ -15,7 +19,7 @@ public class Vigenere
 		{
 			char tempChar = 'a';
 			//C'est une lettre
-			if(word.charAt(i) <= 'z' && word.charAt(i) >= 'a' || word.charAt(i) <= 'Z' && word.charAt(i) >= 'A')
+			if(isLower(word.charAt(i)) || isUpper(word.charAt(i)))
 			{
 				//ça crypte 
 				char letterWord = word.charAt(i);
@@ -41,7 +45,8 @@ public class Vigenere
 		return toReturn;
 	}
 	
-	public static String decrypt(String key, String word)
+	//Décrypter un texte
+	private static String decrypt(String key, String word)
 	{
 		String toReturn = new String();
 		int indexKey = 0;
@@ -49,7 +54,7 @@ public class Vigenere
 		{
 			char tempChar = 'a';
 			//C'est une lettre
-			if(word.charAt(i) <= 'z' && word.charAt(i) >= 'a' || word.charAt(i) <= 'Z' && word.charAt(i) >= 'A')
+			if(isLower(word.charAt(i)) || isUpper(word.charAt(i)))
 			{
 				//ça décrypte 
 				char letterWord = word.charAt(i);
@@ -76,21 +81,141 @@ public class Vigenere
 		return toReturn;
 	}
 	
+	//Trouver la taille de la clé
+	private static String findKey(String text)
+	{
+		String cleanedText = cleanText(text);
+		String key = new String();
+		
+		int keyLength = findkeyLength(cleanedText,15);
+		
+		ArrayList<String> subStrings = new ArrayList<String>();
+		
+		for(int j = 0; j < keyLength; j++)
+		{
+			subStrings.add(j, new String());
+		}
+		
+		for(int i = 0; i < cleanedText.length(); i++)
+		{
+			subStrings.set(i % keyLength, subStrings.get(i % keyLength) + cleanedText.charAt(i));
+		}
+		
+		for(int k = 0; k < keyLength; k++)
+		{
+			char letter = getLetterMaxFreq(subStrings.get(k));
+			
+			// - 4 car la lettre la plus fréquente en anglais est e (4), je décale toute la clé de 4 lettre donc e devient a 
+			key += (char)(Math.floorMod(letter - 4 ,26) + 'a');
+		}
+		
+		return key;
+	}
+	
+	//Trouver la clé
+	private static int findkeyLength(String text, int maxLength) 
+	{
+		int keyLength = 0;
+		float maxIC = 0.0f;
+		
+		for(int i = 1; i <= maxLength; i++)
+		{
+			int nbCharInText = 0;
+			float ic = 0.0f;
+			
+			int[] alphabet = new int[26];
+			
+			for(int j = 0; j < alphabet.length; j++)
+			{
+				alphabet[j] = 0;
+			}
+			
+			for(int j = 0; j < text.length(); j += i)
+			{
+				alphabet[text.charAt(j) - 'a']++;
+				nbCharInText++;
+			}
+			
+			for(int j = 0; j < alphabet.length; j++)
+			{
+				double freq = alphabet[j];
+				ic += (freq / nbCharInText) * ((freq -1) / (nbCharInText - 1));
+			}
+			
+			if(ic > maxIC)
+			{
+				maxIC = ic;
+				keyLength = i;
+			}
+		}
+		
+		return keyLength;
+	}
+	
+	//Trouver la lettre la plus fréquente dans un texte donné
+	private static char getLetterMaxFreq(String text)
+	{
+		char ch = 'a';
+		int max = 0;
+		
+		for(int i = 0;i < 26; i++)
+		{
+			int current = 0;
+			for(int  j = 0; j < text.length(); j++)
+			{
+				if(text.charAt(j) == 'a' + i)
+					current++;
+			}
+			
+			if(current > max)
+			{
+				max = current;
+				ch = (char)(i);
+			}
+		}
+		return ch;
+	}
+
+	//Transformer le text en une ligne de minuscules sans signes
+	private static String cleanText(String text)
+	{
+		String str = new String();
+		for(char c : text.toCharArray())
+		{
+			if(isLower(c))
+				str += c;
+			else if(isUpper(c))
+				str += Character.toLowerCase(c);
+		}
+		return str;	
+	}
+	
+	//Ces fonctions me servent aussi à determiner si un char est une lettre ou pas
+	private static boolean isUpper(char ch)
+	{
+		return ch >= 'A' && ch <= 'Z';
+	}
+
+	private static boolean isLower(char ch)
+	{
+		return ch >= 'a' && ch <= 'z';
+	}
+	///////////////////////////////////////////////////////////////////////////////
+	
 	public static void main(String[] args) throws FileNotFoundException 
 	{
-		//java Vigenere -d/-c "key" "cryptedFile" "ClearFile"
+		//java Vigenere -d/-c/-a "key" "cryptedFile" "ClearFile"
 		
 		if(args.length != 4 )
 		{
-			System.err.println("[!] -c/-d key cryptedFile clearFile");
+			System.err.println("[!] -c/-d/-a key cryptedFile clearFile");
 			System.exit(0);
 		}
 		
-		
-		if(args[0].equals("-c"))
+		if(args[0].equals("-c"))//Crypter
 		{
 			String content = new Scanner(new File(args[3])).useDelimiter("\\Z").next();
-			String cryptedWord = vigenere(args[1],content);
+			String cryptedWord = crypt(args[1],content);
 			try{
 			    PrintWriter writer = new PrintWriter(args[2], "UTF-8");
 			    writer.println(cryptedWord);
@@ -99,10 +224,25 @@ public class Vigenere
 			   // do something
 			}
 		}
-		else if(args[0].equals("-d"))
+		else if(args[0].equals("-d"))//décrypter
 		{
 			String content = new Scanner(new File(args[2])).useDelimiter("\\Z").next();
 			String decryptedWord = decrypt(args[1],content);
+			try{
+			    PrintWriter writer = new PrintWriter(args[3], "UTF-8");
+			    writer.println(decryptedWord);
+			    writer.close();
+			} catch (IOException e) {
+			   // do something
+			}
+		}
+		else if(args[0].equals("-a"))//casser
+		{
+			String content = new Scanner(new File(args[2])).useDelimiter("\\Z").next();
+			String key = findKey(content);
+			System.out.println("The key is "+key);
+			System.out.println("Writing the clear file...");
+			String decryptedWord = decrypt(key,content);
 			try{
 			    PrintWriter writer = new PrintWriter(args[3], "UTF-8");
 			    writer.println(decryptedWord);

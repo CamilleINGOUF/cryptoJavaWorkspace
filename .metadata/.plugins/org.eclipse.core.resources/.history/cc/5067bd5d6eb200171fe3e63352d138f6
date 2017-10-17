@@ -1,0 +1,237 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Vigenere 
+{
+	public static String vigenere(String key, String word)
+	{
+		String toReturn = new String();
+		
+		int indexKey = 0;
+		for(int i = 0; i < word.length(); i++)
+		{
+			char tempChar = 'a';
+			//C'est une lettre
+			if(word.charAt(i) <= 'z' && word.charAt(i) >= 'a' || word.charAt(i) <= 'Z' && word.charAt(i) >= 'A')
+			{
+				//ça crypte 
+				char letterWord = word.charAt(i);
+				boolean isUpperCase = Character.isUpperCase(letterWord);
+				int letterKey = key.charAt(indexKey%key.length());
+				letterKey = Character.toLowerCase(letterKey);
+				
+				letterWord = Character.toLowerCase(letterWord);
+				
+				tempChar = (char)((((letterWord + letterKey)%97)%26)+97);
+				
+				if(isUpperCase)
+					tempChar = Character.toUpperCase(tempChar);
+				
+				indexKey++;
+			}
+			else//Ce n'est pas une lettre
+			{
+				tempChar = word.charAt(i);
+			}
+			toReturn += tempChar;
+		}
+		return toReturn;
+	}
+	
+	public static String decrypt(String key, String word)
+	{
+		String toReturn = new String();
+		int indexKey = 0;
+		for(int i = 0; i < word.length(); i++)
+		{
+			char tempChar = 'a';
+			//C'est une lettre
+			if(word.charAt(i) <= 'z' && word.charAt(i) >= 'a' || word.charAt(i) <= 'Z' && word.charAt(i) >= 'A')
+			{
+				//ça décrypte 
+				char letterWord = word.charAt(i);
+				boolean isUpperCase = Character.isUpperCase(letterWord);
+				char letterKey = key.charAt(indexKey%key.length());
+				letterKey = Character.toLowerCase(letterKey);
+				
+				letterWord = Character.toLowerCase(letterWord);
+				
+				tempChar = (char)(((Math.floorMod((letterWord - letterKey), 26))%97)+97);
+				
+				if(isUpperCase)  
+					tempChar = Character.toUpperCase(tempChar);
+				
+				indexKey++;
+			}
+			else
+			{
+				tempChar = word.charAt(i);
+			}
+			
+			toReturn += tempChar;
+		}
+		return toReturn;
+	}
+	
+	private static String findKey(String text)
+	{
+		String cleanedText = cleanText(text);
+		String key = new String();
+		
+		int keyLength = findkeyLength(cleanedText,15);
+		
+		ArrayList<String> subStrings = new ArrayList<String>();
+		
+		for(int j = 0; j < keyLength; j++)
+		{
+			subStrings.add(j, new String());
+		}
+		
+		for(int i = 0; i < cleanedText.length(); i++)
+		{
+			subStrings.set(i % keyLength, subStrings.get(i % keyLength) + cleanedText.charAt(i));
+		}
+		
+		for(int k = 0; k < keyLength; k++)
+		{
+			char letter = getLetterMaxFreq(subStrings.get(k));
+			
+			// - 4 car la lettre la plus fréquente en anglais est e (4), je décale toute la clé de 4 lettre donc e devient a 
+			key += (char)(Math.floorMod(letter - 4 ,26) + 'a');
+		}
+		
+		return key;
+	}
+	
+	private static int findkeyLength(String text, int maxLength) 
+	{
+		int keyLength = 0;
+		float maxIC = 0.0f;
+		
+		for(int i = 1; i <= maxLength; i++)
+		{
+			int nbCharInText = 0;
+			float ic = 0.0f;
+			
+			int[] alphabet = new int[26];
+			
+			for(int j = 0; j < alphabet.length; j++)
+			{
+				alphabet[j] = 0;
+			}
+			
+			for(int j = 0; j < text.length(); j += i)
+			{
+				alphabet[text.charAt(j) - 'a']++;
+				nbCharInText++;
+			}
+			
+			for(int j = 0; j < alphabet.length; j++)
+			{
+				double freq = alphabet[j];
+				ic += (freq / nbCharInText) * ((freq -1) / (nbCharInText - 1));
+			}
+			
+			if(ic > maxIC)
+			{
+				maxIC = ic;
+				keyLength = i;
+			}
+		}
+		
+		return keyLength;
+	}
+	
+	private static char getLetterMaxFreq(String text)
+	{
+		char ch = 'a';
+		int max = 0;
+		
+		for(int i = 0;i < 26; i++)
+		{
+			int current = 0;
+			for(int  j = 0; j < text.length(); j++)
+			{
+				if(text.charAt(j) == 'a' + i)
+					current++;
+			}
+			
+			if(current > max)
+			{
+				max = current;
+				ch = (char)(i);
+			}
+		}
+		return ch;
+	}
+
+	private static String cleanText(String text)
+	{
+		String str = new String();
+		for(char c : text.toCharArray())
+		{
+			if(isLower(c))
+				str += c;
+			else if(isUpper(c))
+				str += Character.toLowerCase(c);
+		}
+		return str;	
+	}
+	
+	private static boolean isUpper(char ch)
+	{
+		return ch >= 'A' && ch <= 'Z';
+	}
+
+	private static boolean isLower(char ch)
+	{
+		return ch >= 'a' && ch <= 'z';
+	}
+	
+	public static void main(String[] args) throws FileNotFoundException 
+	{
+		//java Vigenere -d/-c "key" "cryptedFile" "ClearFile"
+		
+		if(args.length != 4 )
+		{
+			System.err.println("[!] -c/-d key cryptedFile clearFile");
+			System.exit(0);
+		}
+		
+		
+		if(args[0].equals("-c"))
+		{
+			String content = new Scanner(new File(args[3])).useDelimiter("\\Z").next();
+			String cryptedWord = vigenere(args[1],content);
+			try{
+			    PrintWriter writer = new PrintWriter(args[2], "UTF-8");
+			    writer.println(cryptedWord);
+			    writer.close();
+			} catch (IOException e) {
+			   // do something
+			}
+		}
+		else if(args[0].equals("-d"))
+		{
+			String content = new Scanner(new File(args[2])).useDelimiter("\\Z").next();
+			String decryptedWord = decrypt(args[1],content);
+			try{
+			    PrintWriter writer = new PrintWriter(args[3], "UTF-8");
+			    writer.println(decryptedWord);
+			    writer.close();
+			} catch (IOException e) {
+			   // do something
+			}
+		}
+		else if(args[0].equals("-a"))
+		{
+			String content = new Scanner(new File(args[2])).useDelimiter("\\Z").next();
+			String key = findKey(content);
+			System.out.println("The key is "+key);
+		}
+	}
+}

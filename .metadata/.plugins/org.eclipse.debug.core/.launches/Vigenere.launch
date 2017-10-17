@@ -7,6 +7,6 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="Vigenere"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-d key texteChiffre.txt texteClair.txt"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-a aqwzsxedc texteAnglais2.txt texteClair.txt"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="TP1"/>
 </launchConfiguration>
